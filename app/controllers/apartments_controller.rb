@@ -15,8 +15,12 @@ wrap_parameters format: []
   end
 
   def create
-    apartment = Apartment.create(apartment_params)
-    render json: apartment, status: :created
+    apartment = Apartment.new(apartment_params)
+    if apartment.save
+      render json: apartment, status: :created
+    else 
+      render json: { errors: apartment.errors.full_messages }, status: :unprocessable_entity
+    end    
   end
 
   def update
